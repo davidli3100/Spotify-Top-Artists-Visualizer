@@ -3,15 +3,19 @@
  * Then calling firebase later with a HTTP request in my P5 sketch
  */
 const fetch = require('node-fetch');
-const admin = require('firebase-admin');
+var firebase = require("firebase");
 
-var serviceAccount = require('../src/serviceAccountKey.json');
+var config = {
+    apiKey: "AIzaSyBSM-eCLHyl6rqtMjsvQLUe4EMEyqXHxn8",
+    authDomain: "spotifytrackdb.firebaseapp.com",
+    databaseURL: "https://spotifytrackdb.firebaseio.com",
+    projectId: "spotifytrackdb",
+    storageBucket: "spotifytrackdb.appspot.com",
+    messagingSenderId: "330242531124"
+  };
+  firebase.initializeApp(config);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-var db = admin.firestore();
+  var db = firebase.database();
 
 function getAccessToken() {
     var uri = window.location.href;
@@ -35,7 +39,7 @@ function getUserID() {
 
 function getArtists(id) {
     var access_token = getAccessToken();
-    fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_temr&limit=10', {
+    fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10', {
         headers: {
             'Authorization': 'Bearer ' + access_token
         }
@@ -59,13 +63,22 @@ function getTracks(id, artistData) {
         })
 }
 
-function createUser(id, trackData, artistData) {
-    var docRef = db.collection('users').doc(id);
+// function getRecommendations(id, trackData, artistData) {
+//     var access_token = getAccessToken();
+//     var artists = {};
+//     for()
+//     artists.push({
+//         artistData.
+//     })
+//     fetch()
+// }
 
-    var user = docRef.set({
+function createUser(id, trackData, artistData) {
+    firebase.database().ref('users/' + id).set({
         'track-data': trackData,
         'artist-data': artistData
-      });
+    });
+
 }
 
 getUserID();
