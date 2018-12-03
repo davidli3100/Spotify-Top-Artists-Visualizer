@@ -1,28 +1,34 @@
-const fetch = require('node-fetch');
-
-function getTracks() {
-    var uri = window.location.href;
-    var url = new URL(uri);
-    var access_token = url.searchParams.get("access_token");
-    fetch('https://api.spotify.com/v1/me/top/tracks', {
-        headers: {
-            'Authorization': 'Bearer ' + access_token
-        }
-    }).then(res => res.json()).then(data => console.log(data))
-}
-
-getTracks();
-
 export default function sketch(p) {
 
-    //need to limit rates so i don't make 60 api calls per second and get thrown a 429 error
-    let rate = 0;
+    /**
+     * gets the access token based on params in the uri  
+     * returns access_token as well to any functions that may require the access_token
+     */
 
-    //just initialize the array of values i will be using to visualize the BPM of a song
-    let test = []
+    function getAccessToken() {
+        var uri = window.location.href;
+        var url = new URL(uri);
+        var access_token = url.searchParams.get("access_token");
+        return access_token;
+    }
 
-    //global var for the diameter of the ellipse which will be constantly changing
-    var diameter;
+    /**
+     * gets userID based on the spotify "me" endpoint
+     * uses http fetch function (similar to a GET)
+     * headers for bearer auth with the access_token (which is obtained from the previous function)
+     */
+    function getUserID() {
+        var access_token = getAccessToken();
+        fetch('https://api.spotify.com/v1/me', {
+            headers: {
+                'Authorization': 'Bearer ' + access_token
+            }
+        }).then(res => res.json()).then(data => {
+            console.log("user data");
+            console.log(data);
+            p.getUser(data.id);
+        })
+    }
 
     /**
      * @function
@@ -36,9 +42,11 @@ export default function sketch(p) {
         p.createCanvas(p.windowWidth, p.windowHeight, p.P2D);
         p.ellipseMode(p.RADIUS);
         p.frameRate(600);
-        p.getTopTracks(10, 0, 'medium_term');
+        getUserID();
     }
 
+    //just some prelim variables to hold user data
+    let user = {};
 
     /**
      * @function 
@@ -54,55 +62,38 @@ export default function sketch(p) {
 
     }
 
-    p.drawSongNode = function (title, image, danceability, valance, popularity) {
+    p.drawArtistNode = function (name, image, genres, followers, popularity, pos) {
+
+    }
+
+    p.getUser = function (id) {
+        p.loadJSON("https://spotifytrackdb.firebaseio.com/users/" + id + ".json?print=pretty", p.resolveUser);
+    }
+
+
+    /**
+     * takes loaded user data from my firebase database, then parses it using a forEach key loop
+     * returns parsed data into a songNode (function drawSongNode) which will draw a node on the screen
+     */
+    p.resolveUser = function (data) {
+        console.log('json')
+        console.log(data);
         
+        /**
+         * loops through the artist-data array and gets the individual artist items
+         */
+        for (var i in data["artist-data"].items) {
+            console.log(data["artist-data"].items[i])
+            var followers = data["artist-data"].items[i].followers.total
+            var genres = data["artist-data"].items[i].genres
+            var popularity = data["artist-data"].itmes[i].popularity
+            var image = data["artist-data"].items[i].images[0].url
+            var name = 
+            p.drawArtistNode()
+        }
     }
 
-    /**
-     * @function
-     * @name p.getAccessToken
-     * @returns {string} - the payload of the request
-     * 
-     * same as the earlier get access token function, only this time makes it a p5 function just for consistency
-     */
-    p.getAccessToken = function () {
-        var uri = window.location.href;
-        var url = new URL(uri);
-        var res = url.searchParams.get("access_token");
-        return res
-    }
-
-    console.log(p.getAccessToken());
-
-    /**
-     * @function
-     * @name p.getAudioFeatures 
-     * @param {JSON} data - takes data passed in from the <code>p.getSongID</code> function
-     * @returns {JSON} returns a JSON file of the audio analysis of the current song playing
-     * 
-     * 
-     */
-    p.getAudioFeatures = function (data) {
-        var res = p.getAccessToken()
-        console.log(data)
-        var id = data.item.id
-        var isPlaying = data.is_playing
-        test[2] = isPlaying
-        var audioFeatures = p.loadJSON("https://api.spotify.com/v1/audio-features/" + id + '?access_token=' + res, p.resolveAnalysis)
-        console.log(audioFeatures)
-    }
-
-    p.getTopTracks = function (trackNum, offset, term) {
-        var res = p.getAccessToken()
-        var topTracks = p.loadJSON("https://api.spotify.com/v1/me/top/tracks?access_token=" + res, p.resolveTracks)
-        console.log(topTracks);
-    }
-
-    p.resolveRecommendations = function(data) { 
-               
-    }
-
-    p.resolveTracks = function(data) {
+    p.resolveTracks = function (data) {
         var tempo = data.tempo;
         var danceability = data.danceability;
         test[0] = tempo
