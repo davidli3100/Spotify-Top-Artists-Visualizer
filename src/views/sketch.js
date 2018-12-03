@@ -62,8 +62,12 @@ export default function sketch(p) {
 
     }
 
+    /**
+     * think of this pattern as a weighted graph, traversing it using an algorithm similar to Prim's 
+     * Forming connections (edges) based on a combined score of followers, popularity, and genres
+     */
     p.drawArtistNode = function (name, image, genres, followers, popularity, pos) {
-
+    
     }
 
     p.getUser = function (id) {
@@ -78,18 +82,23 @@ export default function sketch(p) {
     p.resolveUser = function (data) {
         console.log('json')
         console.log(data);
-        
+
         /**
          * loops through the artist-data array and gets the individual artist items
          */
         for (var i in data["artist-data"].items) {
-            console.log(data["artist-data"].items[i])
             var followers = data["artist-data"].items[i].followers.total
             var genres = data["artist-data"].items[i].genres
-            var popularity = data["artist-data"].itmes[i].popularity
+            var popularity = data["artist-data"].items[i].popularity
             var image = data["artist-data"].items[i].images[0].url
-            var name = 
-            p.drawArtistNode()
+            var name = data["artist-data"].items[i].name
+            console.log(
+                "name: " + name + "\n" +
+                "followers: " + followers + "\n" +
+                "popularity: " + popularity + "\n" + 
+                "genres: " + genres
+            )
+            p.drawArtistNode(name, image, genres, followers, popularity, i);
         }
     }
 
