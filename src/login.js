@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
+//title just shows the text
 class Title extends Component {
     render () {
         return (
@@ -12,6 +13,7 @@ class Title extends Component {
     }
 }
 
+//simple button component I made 
 class Button extends Component {
     render () {
         return (
@@ -22,6 +24,7 @@ class Button extends Component {
     }
 }
 
+//exported component containing both classes here 
 export default class login extends Component {
     render() {
         return (

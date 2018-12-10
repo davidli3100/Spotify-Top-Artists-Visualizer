@@ -17,6 +17,29 @@ This Spotify Visualizer was created using the create-react-app npm package as a 
   - Auth token expires after one hour (definitely a feature)
 
 
+## Description of Pattern 
+This pattern was created by getting mulitple Spotify and Firebase API endpoints as well as using Firebase Realtime Database Functionality to save and load data. 
+
+Users log in to my application through Spotify OAuth and that begins several asynchronous processes:
+* `fetch` Spotify endpoint using the `getAccessToken()` function 
+* `fetch` Spotify `v1/me` endpoint to get the User's ID to pass into the `getArtists()` function
+* all of this data is passed into another `getTracks()` function which resolves the data asynchronously and pushes it into a function to `POST` data to the Firebase ref
+* the function `createUser(id, trackData, artistData)` is called, setting a Firebase ref and pushing the top artist/track data to an user-specific ref of the database
+
+Once these processes are finished, `sketch.js` will run, loading JSON data fetched from the Firebase instance, which is also user-specific
+
+Sketch.js does multiple things:
+* parse data returned from the Firebase endpoint and resolve it into a file specific object array
+* loop through array inside draw function using the `p.getArtistsNode(data)` function, then draw the pattern of cards on the canvas based on the Artist's popularity, followers, and genres
+
+**How The Pattern "Changes"**
+The pattern of artist data displayed changes based on mapped values with the functions specified above (and in the code documentation), and user specific listening patterns. When clicked, (user interaction) it loads the relevant artist data
+
+**Challenges**
+P5.js is a monlithic library that fuels my nightmares
+I couldn't load images using a loop, and calling a property on a prototype of an array also returns as undefined even though it's fine in a console. 
+I spent over 5 hours Sunday night debugging the image loading feature and just gave up :/
+
 ## How to Use
   - Make sure you have listening activity on spotify
   - Log in with spotify

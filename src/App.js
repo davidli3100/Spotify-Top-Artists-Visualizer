@@ -48,6 +48,7 @@ class App extends Component {
   render() {
     console.log(this.state.token)
 
+    //if the user is logged in show the p5 sketch and analyze their data, else, show the log-in screen
     if(this.state.token === "loggedIn") {
       return (
         <div className = "App" >

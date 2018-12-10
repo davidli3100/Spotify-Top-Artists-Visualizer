@@ -70,8 +70,8 @@ export default function sketch(p) {
     }
 
     /**
-     * think of this pattern as a weighted graph, traversing it using an algorithm similar to Prim's 
-     * Forming connections (edges) based on a combined score of followers, popularity, and genres
+     * think of this pattern as a weighted graph, traversing it and
+     * weighing nodes based on a combined score of followers, popularity, and genres
      */
 
     p.drawArtistNodes = function (data) {
@@ -80,9 +80,13 @@ export default function sketch(p) {
             return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
           }
 
+        /**
+         * maps all the genres to return a value based on popularity, or randint if it's not a "main stream genre" 
+         */
         const genreMap = (genres) => {
             for(var j = 0; j < genres.length; j++) {
                 if(genres[j].includes('pop')) {
+                    //just returning values based on the popularity of said genre
                     return 100
                 } else if (genres[j].includes('rap') || genres[j].includes('hip')) {
                     return 95
@@ -97,11 +101,13 @@ export default function sketch(p) {
         }
         var xOffset = 125;
         var yOffset = 150;
+        //self explanatory
         var truncateMaxLength = 7
         //draw a colored rectangle mapped to stats of artist with text inside
         //loop through all params first
         for (var i in data) {
             //render rect for text
+            //fills the shape based on the mapToColour function that maps followers/popularity/genres to color
             p.fill(mapToColour(data[i].popularity, 0, 100, 0, 255), mapToColour(data[i].followers, 0, 35000000, 0, 255), genreMap(data[i].genres))
             p.rect(xOffset*i+25, yOffset-50, 100, 100)
             //render text
@@ -110,22 +116,30 @@ export default function sketch(p) {
             p.fill(255)
             p.text(data[i].name.fName, xOffset*i+40, yOffset)
             //truncate text just in case
+            // uses ALOT of try/catch statements since P5.js has many many issues
             try{
+                //find length of the second portion of the artist's name (if available)
             var lNameLength = data[i].name.lName.length
             } catch(err) {
                 console.log(err)
             }
+            //if last name length is greater than 7, we have to truncate
             if(lNameLength > 7) {
+                //try catch again because p5, that's why
                 try {
+                    //truncating lastname using substrings, then appending ellipses to it
                 var truncatedLastName = data[i].name.lName.substring(0, truncateMaxLength-2)
                 p.text(truncatedLastName + '...', xOffset*i+40, yOffset+20)
                 } catch(err) {
                     console.log("error: " + data[i].name.lName)
                 }
             } else {
+                //if their last name is shorter, just draw it in the correct position
                 p.text(data[i].name.lName, xOffset*i+40, yOffset+20)
             }
+            //check if they click on the artist node, then load the artists data
             if(customMouseX > xOffset*i+25  && customMouseX < xOffset*i+125 && customMouseY > yOffset-50 && customMouseY < yOffset+50) {
+                //custom var to store genres for each artist so we can display genres in a nice format
                 var genres = []
                 for(var genre in data[i].genres) {
                     genres.push(data[i].genres[genre])
@@ -138,6 +152,8 @@ export default function sketch(p) {
         
 
     }
+
+    //custom function to track mouseX and mouseY position when clicked
     p.mouseClicked = function() {
         customMouseX = p.mouseX;
         customMouseY = p.mouseY;
