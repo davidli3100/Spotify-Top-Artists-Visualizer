@@ -66,7 +66,7 @@ export default function sketch(p) {
         // p.clear();
         p.background(180)
         p.drawArtistNodes(rects)
-
+        
     }
 
     /**
@@ -183,7 +183,12 @@ export default function sketch(p) {
     }
 
     p.getUser = function (id) {
+        //why not, another try catch for effect
+        try{
         p.loadJSON("https://spotifytrackdb.firebaseio.com/users/" + id + ".json?print=pretty", p.resolveUser);
+        } catch(err) {
+            console.log(err)
+        }
     }
 
 
