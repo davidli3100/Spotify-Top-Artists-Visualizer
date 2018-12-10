@@ -33,9 +33,13 @@ Sketch.js does multiple things:
 * loop through array inside draw function using the `p.getArtistsNode(data)` function, then draw the pattern of cards on the canvas based on the Artist's popularity, followers, and genres
 
 **How The Pattern "Changes"**
+
+
 The pattern of artist data displayed changes based on mapped values with the functions specified above (and in the code documentation), and user specific listening patterns. When clicked, (user interaction) it loads the relevant artist data
 
 **Challenges**
+
+
 P5.js is a monlithic library that fuels my nightmares
 I couldn't load images using a loop, and calling a property on a prototype of an array also returns as undefined even though it's fine in a console. 
 I spent over 5 hours Sunday night debugging the image loading feature and just gave up :/
