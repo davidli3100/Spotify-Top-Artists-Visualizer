@@ -40,7 +40,9 @@ The pattern of artist data displayed changes based on mapped values with the fun
 **Challenges**
 
 
-P5.js is a monlithic library that fuels my nightmares
+P5.js is a monolithic library that fuels my nightmares.
+
+
 I couldn't load images using a loop, and calling a property on a prototype of an array also returns as undefined even though it's fine in a console. 
 I spent over 5 hours Sunday night debugging the image loading feature and just gave up :/
 
