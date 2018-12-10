@@ -1,0 +1,123 @@
+/*
+CSS file for the full react app
+*/
+
+/* just set default fonts for the site, as well as a fall back background color and linear gradientat the bag*/
+.App,
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    z-index: 2;
+    background-color: #f59087; 
+     background-image: linear-gradient(225deg, #dd6e63 0%, #FF2525 74%);
+
+
+}
+
+/* default height of 100% for the screen */
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+}
+
+.App {
+    height: 100%;
+    position: relative;
+}
+
+.login--container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* position canvas the p5 sketch is rendered on to only fit the window viewport, and be transparent/behind everthing else */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+
+
+
+/* the rest of the css file is just miscellaneous positioning to make the app look good */
+.song-title {
+    margin-top: 30px;
+    font-size: 4vh;
+}
+
+.artist {
+    margin-top: 10px;
+}
+
+.song {
+    width: 90%;
+    margin: 2.5rem auto;
+}
+
+.album_img {
+    border-radius: 13px;
+    height: 24vh;
+    width: auto;
+    float: right
+}
+
+.start_btn {
+    font-size: 1.7rem;
+    background-color: #1ed760 !important;
+    line-height: 1;
+    border-radius: 500px;
+    font-weight: 600;
+    padding: 2rem 3rem;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+    text-decoration: none !important;
+    color: white;
+}
+
+.start_btn:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transform: scale(0.95);
+}
+
+.main_section {
+    margin: 0 auto;
+}
+
+.title {
+    vertical-align: middle;
+    text-align: center;
+}
+
+#start-title {
+    padding: 10px 0;
+    font-weight: 800;
+}
+
+.get_started {
+    vertical-align: middle;
+    text-align: center;
+    margin-top: 5rem;
+}
+
+.main {
+    height: -webkit-fill-available;
+    margin: auto;
+}
+
+.contain {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}

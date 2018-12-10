@@ -22,10 +22,10 @@ class Button extends Component {
     }
 }
 
-export default class login {
+export default class login extends Component {
     render() {
         return (
-            <div>
+            <div className="login--container">
             <Title/>
             <Button/>
         </div>
