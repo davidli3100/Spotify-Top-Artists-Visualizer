@@ -1,4 +1,4 @@
-# P5.js Spotify Visualizer
+# P5.js Spotify Top Artist Visualizer
 
 ![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)
 
