@@ -1,44 +1,101 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# P5.js Spotify Visualizer
 
-## Available Scripts
+![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)
 
-In the project directory, you can run:
+![image](https://i.imgur.com/u9AkCYv.png)
 
-### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This Spotify Visualizer was created using the create-react-app npm package as a barebones framework and an Oauth Bridge Template
+  - See your top 10 artists, categorized using colors
+  - See error messages thrown right onto your very own screen (!!!)
+  - Fueled by Red Bull Tropical and working until 5am
+  - ***Disclaimer:*** Documentation may harm your mental health
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## New Features!
 
-### `npm test`
+  - It works
+  - Auth token expires after one hour (definitely a feature)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## How to Use
+  - Make sure you have listening activity on spotify
+  - Log in with spotify
+  - Success! Now you can watch a bland background and some rectangles do stuff
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Known Errors
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Didn't have enough time to fully try/catch everything so uh there's quite a few of them
 
-### `npm run eject`
+* Random exceptions -> just close the error screen when it pops up (sometimes Spotify throws a 502 error on their side)
+* Undefined values -> P5.js is dumb a lot of times and it'll return undefined values for my arrays when there's a clearly defined value. Even in async time
+* Weird flickering on the squares, I have to loop through to draw the rects so it's a little weird 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### File Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+A brief outline of the important files that are in this repo
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+| Path | Description |
+| ------ | ------ |
+| frontend/src/firebase.js | Makes asynchronous API calls to get Spotify User Data and save it to firebase so we can load JSON from P5 |
+| frontend/src/P5Wrapper.js | React component that takes a P5 sketch as input and renders it (better cross-platform in-browser performance) |
+| frontend/src/js/sketch.js | Where my P5 sketch and some API calls reside |
+| backend/server.js | Basic OAuth Bridge to instantiate Spotify Auth flows and pass tokens to my frontend server |
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Development
+
+Want to run this on your local machine?
+
+Clone this github repo and install the LTS version of Node.js
+You will also need to sign in as a [Spotify Developer](https://developer.spotify.com) and create an app 
+
+In the app, you will need your CLIENT_ID and CLIENT_SECRET, make sure to set your callback URLs to ```localhost:yourPort/callback```
+
+In each folder, create a ```.env``` file to store your environment variables. 
+
+In the backend folder, add these variables to the ```.env``` file you created
+
+| Variable | Description |
+| ------ | ------ |
+| PORT | The port you want the frontend server to run off of (defaults to 8888) |
+| SPOTIFY_CLIENT_ID | The Spotify Client ID (obtained from your developer dashboard) |
+|SPOTIFY_CLIENT_SECRET| Spotify Client Secret |
+|REDIRECT_URI| The URI spotify will run a callback redirect on with the access codes|
+|FRONTEND_URI| The URI where the front end server is running (defaults to localhost:3000)
+
+Open your favorite Terminal and run these commands.
+
+First Tab:
+```sh
+$ cd frontend
+$ npm install
+$ npm start
+
+```
+
+
+Second Tab:
+```sh
+$ cd backend
+$ npm install
+$ npm start
+```
+At this point, React-scripts would have opened a browser tab with the app in it. Verify that logging in and getting callbacks works. Then you're free to modify this!
+
+
+
+### Todos
+
+ - Write MORE Tests
+ - more try/catch for server response errors 
+ - pop up modal for more options to change the patterns
+ - fully implement refresh tokens so access tokens can automatically refresh after the 60 minute limit
+ - display API data in a more pretty way
+
+
+
+
+
